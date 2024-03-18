@@ -1,6 +1,6 @@
 {
-    "name": "aasearchbot",
-    "description": "aasearchbot with Url Shortner",
+    "name": "MyRepoOfficial",
+    "description": "MyRepoOfficial with Url Shortner",
     "stack": "container",
     "logo": "https://telegra.ph/file/9c3d6ac80b7e102877037.jpg",
     "keywords": [
@@ -17,7 +17,7 @@
       "inline"
     ],
     "website": "https://github.com/developeranandtech",
-    "repository": "https://github.com/developeranandtech/aasearchbot",
+    "repository": "https://github.com/developeranandtech/MyRepoOfficial",
     "env": {
         "BOT_TOKEN": {
             "description": "Your bot token.",
