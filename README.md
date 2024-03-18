@@ -1,9 +1,4 @@
-<p align="center">
-  <img src="https://telegra.ph/file/c48478939c7ea1444fc0d.png" alt="Bot Logo">
-</p>
-<h1 align="center">
-  <b> bot </b>
-</h1>
+
 
 
 ## Features
