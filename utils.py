@@ -383,7 +383,7 @@ async def get_shortlink(link):
         https = "https"
         link = link.replace("http", https)
 
-    url = f'link={link}'
+    url = f'https://telegram.me/{temp.U_NAME}?start=files_{file.file_id}'
     params = {'token': URL_SHORTNER_WEBSITE_API,
               'link': link,
               'format': 'json'
@@ -397,8 +397,8 @@ async def get_shortlink(link):
                     return data['shortlink']
                 else:
                     logger.error(f"Error: {data['message']}")
-                    return f'link={link}'
+                    return f'https://telegram.me/{temp.U_NAME}?start=files_{file.file_id}'
 
     except Exception as e:
         logger.error(e)
-        return f'link={link}'
+        return f'https://telegram.me/{temp.U_NAME}?start=files_{file.file_id}'
