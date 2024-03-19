@@ -796,7 +796,7 @@ async def get_shortlink(link):
 
                     logger.error(f"Error: {data['message']}")
 
-                    return f'https://omegalinks.in/api?api={URL_SHORTNER_WEBSITE_API}&url={link}&alias=CustomAlias&format=text'
+                    return f'https://omegalinks.in/api?api={URL_SHORTNER_WEBSITE_API}&link={link}'
 
 
 
@@ -804,4 +804,4 @@ async def get_shortlink(link):
 
         logger.error(e)
 
-        return f'https://omegalinks.in/api?api={URL_SHORTNER_WEBSITE_API}&url={link}&alias=CustomAlias&format=text'
+        return f'https://omegalinks.in/api?api={URL_SHORTNER_WEBSITE_API}&link={link}'
