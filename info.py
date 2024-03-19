@@ -69,9 +69,9 @@ LOG_STR += f"Your current IMDB template is {IMDB_TEMPLATE}"
 
 ## EXTRA FEATURES ##
     
-      # URL Shortener #
-
-URL_SHORTENR_WEBSITE = environ.get('URL_SHORTENR_WEBSITE', '')
+# Url Shortner
+URL_MODE = is_enabled((environ.get("URL_MODE","True")), False)
+URL_SHORTENR_WEBSITE = environ.get('URL_SHORTENR_WEBSITE', '') #Always use website url from api section 
 URL_SHORTNER_WEBSITE_API = environ.get('URL_SHORTNER_WEBSITE_API', '')
 
      # Auto Delete For Group Message (Self Delete) #
