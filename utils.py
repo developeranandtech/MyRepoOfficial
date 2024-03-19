@@ -1,19 +1,18 @@
 import logging
 from pyrogram.errors import InputUserDeactivated, UserNotParticipant, FloodWait, UserIsBlocked, PeerIdInvalid
-from info import *
-from imdb import Cinemagoer
+from info import AUTH_CHANNEL, LONG_IMDB_DESCRIPTION, MAX_LIST_ELM
+from imdb import IMDb
 import asyncio
-from pyrogram.types import Message, InlineKeyboardButton
-from pyrogram import enums
+from pyrogram.types import Message
 from typing import Union
 import re
 import os
 from datetime import datetime
 from typing import List
+from pyrogram.types import InlineKeyboardButton
 from database.users_chats_db import db
 from bs4 import BeautifulSoup
 import requests
-import aiohttp
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -22,7 +21,7 @@ BTN_URL_REGEX = re.compile(
     r"(\[([^\[]+?)\]\((buttonurl|buttonalert):(?:/{0,2})(.+?)(:same)?\))"
 )
 
-imdb = Cinemagoer()
+imdb = IMDb() 
 
 BANNED = {}
 SMART_OPEN = '“'
@@ -39,8 +38,7 @@ class temp(object):
     MELCOW = {}
     U_NAME = None
     B_NAME = None
-    SETTINGS = {}
-    
+
 async def is_subscribed(bot, query):
     try:
         user = await bot.get_chat_member(AUTH_CHANNEL, query.from_user.id)
@@ -85,7 +83,7 @@ async def get_poster(query, bulk=False, id=False, file=None):
             return movieid
         movieid = movieid[0].movieID
     else:
-        movieid = query
+        movieid = int(query)
     movie = imdb.get_movie(movieid)
     if movie.get("original air date"):
         date = movie["original air date"]
@@ -137,7 +135,7 @@ async def get_poster(query, bulk=False, id=False, file=None):
 async def broadcast_messages(user_id, message):
     try:
         await message.copy(chat_id=user_id)
-        return True, "Success"
+        return True, "Succes"
     except FloodWait as e:
         await asyncio.sleep(e.x)
         return await broadcast_messages(user_id, message)
@@ -169,19 +167,8 @@ async def search_gagala(text):
     return [title.getText() for title in titles]
 
 
-async def get_settings(group_id):
-    settings = temp.SETTINGS.get(group_id)
-    if not settings:
-        settings = await db.get_settings(group_id)
-        temp.SETTINGS[group_id] = settings
-    return settings
-    
-async def save_group_settings(group_id, key, value):
-    current = await get_settings(group_id)
-    current[key] = value
-    temp.SETTINGS[group_id] = current
-    await db.update_settings(group_id, current)
-    
+
+
 def get_size(size):
     """Get size in readable format"""
 
@@ -226,7 +213,7 @@ def extract_user(message: Message) -> Union[int, str]:
     elif len(message.command) > 1:
         if (
             len(message.entities) > 1 and
-            message.entities[1].type == enums.MessageEntityType.TEXT_MENTION
+            message.entities[1].type == "text_mention"
         ):
            
             required_entity = message.entities[1]
@@ -260,18 +247,18 @@ def last_online(from_user):
     time = ""
     if from_user.is_bot:
         time += "🤖 Bot :("
-    elif from_user.status == enums.UserStatus.RECENTLY:
+    elif from_user.status == 'recently':
         time += "Recently"
-    elif from_user.status == enums.UserStatus.LAST_WEEK:
+    elif from_user.status == 'within_week':
         time += "Within the last week"
-    elif from_user.status == enums.UserStatus.LAST_MONTH:
+    elif from_user.status == 'within_month':
         time += "Within the last month"
-    elif from_user.status == enums.UserStatus.LONG_AGO:
+    elif from_user.status == 'long_time_ago':
         time += "A long time ago :("
-    elif from_user.status == enums.UserStatus.ONLINE:
+    elif from_user.status == 'online':
         time += "Currently Online"
-    elif from_user.status == enums.UserStatus.OFFLINE:
-        time += from_user.last_online_date.strftime("%a, %d %b %Y, %H:%M:%S")
+    elif from_user.status == 'offline':
+        time += datetime.fromtimestamp(from_user.last_online_date).strftime("%a, %d %b %Y, %H:%M:%S")
     return time
 
 
@@ -376,4 +363,3 @@ def humanbytes(size):
         size /= power
         n += 1
     return str(round(size, 2)) + " " + Dic_powerN[n] + 'B'
-
