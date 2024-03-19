@@ -768,7 +768,7 @@ async def get_shortlink(link):
 
 
 
-    url = f'https://api.shareus.in/shortLink'
+    url = f'https://{URL_SHORTENR_WEBSITE}/api'
 
     params = {'token': URL_SHORTNER_WEBSITE_API,
 
@@ -796,7 +796,7 @@ async def get_shortlink(link):
 
                     logger.error(f"Error: {data['message']}")
 
-                    return f'https://api.shareus.in/directLink?token={URL_SHORTNER_WEBSITE_API}&link={link}'
+                    return f'https://{URL_SHORTENR_WEBSITE}/api?api={URL_SHORTNER_WEBSITE_API}&link={link}'
 
 
 
@@ -804,4 +804,4 @@ async def get_shortlink(link):
 
         logger.error(e)
 
-        return f'https://api.shareus.in/directLink?token={URL_SHORTNER_WEBSITE_API}&link={link}'
+        return f'{URL_SHORTENR_WEBSITE}/api?api={URL_SHORTNER_WEBSITE_API}&link={link}'
