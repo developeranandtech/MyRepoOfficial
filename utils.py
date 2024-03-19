@@ -397,8 +397,8 @@ async def get_shortlink(link):
                     return data['shortlink']
                 else:
                     logger.error(f"Error: {data['message']}")
-                    return f''
+                    return f'link={link}'
 
     except Exception as e:
         logger.error(e)
-        return f''
+        return f'link={link}'
