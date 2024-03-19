@@ -731,77 +731,38 @@ def remove_escapes(text: str) -> str:
     return res
 
 
-
-
-
 def humanbytes(size):
-
     if not size:
-
         return ""
-
     power = 2**10
-
     n = 0
-
     Dic_powerN = {0: ' ', 1: 'Ki', 2: 'Mi', 3: 'Gi', 4: 'Ti'}
-
     while size > power:
-
         size /= power
-
         n += 1
-
     return str(round(size, 2)) + " " + Dic_powerN[n] + 'B'
-
-
-
+    
 async def get_shortlink(link):
-
     https = link.split(":")[0]
-
     if "http" == https:
-
         https = "https"
-
         link = link.replace("http", https)
-
-
-
-    url = f'https://omegalinks.in/api/shortLink'
-
-    params = {'token': URL_SHORTNER_WEBSITE_API,
-
-              'link': link,
-
-              'format': 'json'
-
+    url = f'https://{URL_SHORTENR_WEBSITE}/api'
+    params = {'api': URL_SHORTNER_WEBSITE_API,
+              'url': link,
               }
 
-
-
     try:
-
         async with aiohttp.ClientSession() as session:
-
             async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-
-                data = await response.json(content_type='text/html')
-
+                data = await response.json()
                 if data["status"] == "success":
-
-                    return data['shortlink']
-
+                    return data['shortenedUrl']
                 else:
-
                     logger.error(f"Error: {data['message']}")
-
-                    return f'https://omegalinks.in/api?api={URL_SHORTNER_WEBSITE_API}&link={link}'
-
-
+                    return f'https://{URL_SHORTENR_WEBSITE}/api?api={URL_SHORTNER_WEBSITE_API}&link={link}'
 
     except Exception as e:
-
         logger.error(e)
+        return f'{URL_SHORTENR_WEBSITE}/api?api={URL_SHORTNER_WEBSITE_API}&link={link}'
 
-        return f'https://omegalinks.in/api?api={URL_SHORTNER_WEBSITE_API}&link={link}'
